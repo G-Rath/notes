@@ -1,0 +1,6 @@
+.idea/
+*.iws
+.vscode
+*.swp
+.env
+node_modules
