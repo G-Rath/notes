@@ -1,0 +1,25 @@
+{
+  "name": "notes",
+  "version": "1.0.0",
+  "description": "A collection of loose notes by yours truely",
+  "keywords": [],
+  "homepage": "https://github.com/G-Rath/notes#readme",
+  "bugs": {
+    "url": "https://github.com/G-Rath/notes/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/G-Rath/notes.git"
+  },
+  "license": "ISC",
+  "author": "Gareth Jones",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "prettier": "prettier-config-ackama",
+  "devDependencies": {
+    "prettier": "^2.1.2",
+    "prettier-config-ackama": "^0.1.2"
+  }
+}
