@@ -20,3 +20,21 @@ mkdir /app/nano
 curl https://github.com/Ehryk/heroku-nano/raw/master/heroku-nano-2.5.1/nano.tar.gz --location --silent | tar xz -C /app/nano
 export PATH=$PATH:/app/nano
 ```
+
+## How can I get AWS creds setup from just a profile?
+
+Sometimes you're using a thing that requires `AWS_ACCESS_KEY_ID` &
+`AWS_SECRET_ACCESS_KEY` to be set, rather than an `AWS_PROFILE`.
+
+This isn't the end of the world, but it is annoying to have to stop what you're
+doing to dig up these values and set them up in your env.
+
+Luckily, you can get these values from the `aws` cli with `aws configure`,
+meaning you can use the following to handle getting the keys for the profile you
+wish to use:
+
+```
+export AWS_PROFILE="<profile name>"
+export AWS_ACCESS_KEY_ID=$(aws configure get aws_access_key_id)
+export AWS_SECRET_ACCESS_KEY=$(aws configure get aws_secret_access_key)
+```
