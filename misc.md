@@ -38,3 +38,36 @@ export AWS_PROFILE="<profile name>"
 export AWS_ACCESS_KEY_ID=$(aws configure get aws_access_key_id)
 export AWS_SECRET_ACCESS_KEY=$(aws configure get aws_secret_access_key)
 ```
+
+# How can I have two versions of `npm`? (or other global `node` packages in general)
+
+Using `nodenv`:
+
+Effectively, you want to create a "alias" for a node version that you install
+the alternative version of `npm`. Then you can opt specific projects into using
+that version of node using the regular methods, i.e `.node-version` or
+`NODENV_VERSION`.
+
+You can do this by navigating to where `nodenv` stores its versions (you can get
+this using `nodenv root`), and copying the desired version to a new folder with
+a different name.
+
+i.e, to create a version of node 14.16.0 with `npm@7`:
+
+```shell
+# 1. install the version of node you want to use
+nodenv install 14.16.0
+
+# 2. navigate to where nodenv stores its node versions
+cd $(nodenv root)/versions
+
+# 3. copy the version of node you wish to use to another folder with a new name
+cp -r 14.16.0{,+npm7}
+
+# 4. install the version of npm you wish to use
+NODENV_VERSION=14.16.0+npm7 npm i -g npm@7
+```
+
+Now you can have a project use this version of npm via .node-version:
+
+    echo '14.16.0+npm7' > .node-version
