@@ -71,3 +71,50 @@ NODENV_VERSION=14.16.0+npm7 npm i -g npm@7
 Now you can have a project use this version of npm via .node-version:
 
     echo '14.16.0+npm7' > .node-version
+
+# How do I run specific tests with `rspec`?
+
+Say you have the following `context` that you'd like to run, in between a bunch
+of other tests:
+
+```ruby
+RSpec.describe ContactController, type: :controller do
+  # ...
+
+  context "when the submission is spam" do
+    before do
+      allow(Akismet).to receive(:spam?).and_return(false)
+    end
+
+    it "does not create a mailer" do
+      expect do
+        get :create, params: valid_params
+      end.not_to change { ActionMailer::Base.deliveries.count }
+    end
+
+    it "returns user to new contact page" do
+      get :create, params: valid_params
+      expect(response).to render_template :new
+    end
+  end
+
+  # ...
+end
+```
+
+You can add a tag to the block, and then have `rspec` run only tests that have
+that tag with `--tag`:
+
+```ruby
+  # ...
+
+  context "when the submission is spam", :focus do
+    # ...
+  end
+
+  # ...
+```
+
+```shell
+bundle exec rspec --tag focus
+```
