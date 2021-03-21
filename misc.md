@@ -118,3 +118,24 @@ that tag with `--tag`:
 ```shell
 bundle exec rspec --tag focus
 ```
+
+## How do I generate a new ssh-key for a server?
+
+```
+ssh-keygen -t rsa -b 4096 -N '' -f ./temp_key
+```
+
+## How do I strip a trailing newline from a commands output?
+
+```
+tr -d '\n'
+```
+
+i.e
+
+```shell
+cat ~/.ssh/id_rsa.pub | tr -d '\n'
+whats_my_public_ip | tr -d '\n'
+
+# etc...
+```
