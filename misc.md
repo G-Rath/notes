@@ -139,3 +139,86 @@ whats_my_public_ip | tr -d '\n'
 
 # etc...
 ```
+
+## How can I find duplicate rows in Google Sheets?
+
+Use the following custom script:
+
+```
+const ensureArray = input => Array.isArray(input) ? input : [[input]];
+
+const computeHash = str => {
+  let rawHash = Utilities.computeDigest(Utilities.DigestAlgorithm.MD5, str);
+  let txtHash = '';
+
+  for (i = 0; i < rawHash.length; i++) {
+    let hashVal = rawHash[i];
+
+    if (hashVal < 0) {
+      hashVal += 256;
+    }
+
+    if (hashVal.toString(16).length == 1) {
+      txtHash += '0';
+    }
+
+    txtHash += hashVal.toString(16);
+  }
+
+  return txtHash;
+}
+
+function MD5 (input) {
+  const rows = ensureArray(input);
+
+  return rows.map(row => computeHash(row.join()));
+}
+```
+
+Setup a column that selects all the columns in your row:
+
+    =MD5(A82:Q82)
+
+And then add a conditional formatting rule for that column with this "Custom
+formula is":
+
+    =countif(A:A,A1)>1
+
+# Why is `binding.pry` stopping in the wrong place? (Usually after editing my code)
+
+Seems to be an issue with
+[bootsnap](https://github.com/deivid-rodriguez/byebug/issues/452)
+
+# How do I get `husky` hooks to play nice with WSLv1?
+
+Add a script with the name of the command you'd like to shim in a folder on your
+Windows Path
+
+For example, I've got `C:\bin` on my Path for this very purpose.
+
+Use this as the contents of the script:
+
+```
+# windows shim of yarn that is called by husky and friends
+
+echo "windows yarn was called"
+
+cmd.exe '/C C:\Users\<user>\AppData\Local\Microsoft\WindowsApps\ubuntu.exe run "/home/<user>/.nodenv/shims/yarn"' $@
+```
+
+Replacing `yarn` with the command you want to run
+
+# "failed to initialize build cache" error when setting up Go projects in IntelliJ
+
+> failed to initialize build cache at
+> C:\WINDOWS\system32\config\systemprofile\go\cache: mkdir
+> C:\WINDOWS\system32\config\systemprofile: Cannot create a file when that file
+> already exists.
+
+It seems that IntelliJ defaults to sticking its go cache in that location; you
+can fix this by adding `GOCACHE` in the `Environment` setting located at
+`File | Settings | Languages & Frameworks | Go | Go Modules`
+
+i.e
+
+> GOCACHE=C:\Users\G-Rath\go\cache
